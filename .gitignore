@@ -1,0 +1,22 @@
+# Environment variables and secrets
+.env
+
+# Virtual environment
+venv/
+env/
+.venv/
+
+# Python bytecode and cache
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Django local artifacts
+*.log
+db.sqlite3
+media/
+staticfiles/
+
+# Editor directories
+.vscode/
+.idea/
