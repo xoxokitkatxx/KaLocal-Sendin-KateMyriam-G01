@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+{% block title %}My Profile | KaLocal{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-7">
+        <div class="card border-0 shadow-sm">
+            <div class="card-body p-4">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h3 class="fw-bold text-success mb-0">My User Profile</h3>
+                    <a href="{% url 'profile_edit' %}" class="btn btn-success btn-sm">Edit Profile</a>
+                </div>
+                <hr>
+                <dl class="row mb-0">
+                    <dt class="col-sm-4 text-muted">Username</dt>
+                    <dd class="col-sm-8 fw-semibold">{{ user.username }}</dd>
+
+                    <dt class="col-sm-4 text-muted">Full Name</dt>
+                    <dd class="col-sm-8">{{ profile.full_name }}</dd>
+
+                    <dt class="col-sm-4 text-muted">Email Address</dt>
+                    <dd class="col-sm-8">{{ profile.email }}</dd>
+
+                    <dt class="col-sm-4 text-muted">Contact Number</dt>
+                    <dd class="col-sm-8">{{ profile.contact_number|default:"Not provided yet" }}</dd>
+
+                    <dt class="col-sm-4 text-muted">Account Role</dt>
+                    <dd class="col-sm-8">
+                        <span class="badge bg-success">{{ profile.get_role_display }}</span>
+                        <span class="text-muted small ms-1">(Locked)</span>
+                    </dd>
+
+                    <dt class="col-sm-4 text-muted">Registered Barangay</dt>
+                    <dd class="col-sm-8">{{ profile.location.barangay_name }}, {{ profile.location.city }}</dd>
+
+                    <dt class="col-sm-4 text-muted">Bio / Notes</dt>
+                    <dd class="col-sm-8">{{ profile.bio|default:"No bio or stall notes added yet." }}</dd>
+
+                    <dt class="col-sm-4 text-muted">Member Since</dt>
+                    <dd class="col-sm-8">{{ profile.created_at|date:"F d, Y" }}</dd>
+                </dl>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
