@@ -37,7 +37,7 @@ ROOT_URLCONF = 'kalocal_project.urls'
 
 TEMPLATES = [
     {
-        'BACKEND': 'django.contrib.django.DjangoTemplates',
+        'BACKEND': 'django.template.backends.django.DjangoTemplates',python
         'DIRS': [BASE_DIR / 'templates'],
         'APP_DIRS': True,
         'OPTIONS': {
