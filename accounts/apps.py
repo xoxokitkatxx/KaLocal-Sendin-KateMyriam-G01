@@ -4,14 +4,15 @@ from django.db.models.signals import post_migrate
 
 def seed_cebu_barangays(sender, **kwargs):
     from .models import Location
-    default_barangays = [
-        'Apas', 'Banilad', 'Basak San Nicolas', 'Busay', 'Capitol Site',
-        'Guadalupe', 'Kasambagan', 'Labangon', 'Lahug', 'Mabolo',
-        'Pardo', 'Punta Princesa', 'Sambag I', 'Sambag II', 'Talamban', 'Tisa'
+    barangays = [
+        'Apas', 'Banilad', 'Basak San Nicolas', 'Busay',
+        'Capitol Site', 'Guadalupe', 'IT Park / Lahug', 'Kasambagan',
+        'Labangon', 'Mabolo', 'Pardo', 'Punta Princesa',
+        'Sambag I', 'Sambag II', 'Talamban', 'Tisa'
     ]
-    for brgy in default_barangays:
+    for name in barangays:
         Location.objects.get_or_create(
-            barangay_name=brgy,
+            barangay_name=name,
             defaults={'city': 'Cebu City'}
         )
 

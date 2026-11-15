@@ -1,0 +1,56 @@
+{% extends 'accounts/base.html' %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h4 class="fw-bold text-success mb-0">My Account Profile</h4>
+    <a href="{% url 'dashboard' %}" class="btn btn-outline-success btn-sm fw-semibold">&larr; Back to Home Dashboard</a>
+</div>
+
+<div class="row g-4">
+    <div class="col-md-5">
+        <div class="card shadow-sm border-0">
+            <div class="card-body p-4">
+                <span class="badge bg-success mb-2">{{ profile.get_role_display }} (Locked)</span>
+                <h4 class="fw-bold mb-0">{{ profile.full_name }}</h4>
+                <p class="text-muted small mb-1">@{{ request.user.username }}</p>
+                <p class="text-muted small mb-3">{{ profile.email }}</p>
+
+                <hr>
+                <p class="mb-2"><strong>Barangay:</strong> {{ profile.location }}</p>
+                <p class="mb-2"><strong>Contact Number:</strong> {{ profile.contact_number|default:"Not provided" }}</p>
+                <p class="mb-3"><strong>Bio:</strong><br>{{ profile.bio|default:"No bio added yet." }}</p>
+
+                <form method="POST" action="{% url 'delete_account' %}" onsubmit="return confirm('Are you sure you want to permanently delete your KaLocal account?');">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-outline-danger btn-sm w-100">Delete Account</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-7">
+        <div class="card shadow-sm border-0">
+            <div class="card-body p-4">
+                <h5 class="fw-bold text-success mb-3">Update Profile Information</h5>
+                <form method="POST">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold">Account Role (Read-Only)</label>
+                        <input type="text" class="form-control bg-light" value="{{ profile.get_role_display }}" disabled>
+                    </div>
+                    {% for field in form %}
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold">{{ field.label }}</label>
+                            {{ field }}
+                            {% if field.errors %}
+                                <div class="text-danger small mt-1">{{ field.errors|striptags }}</div>
+                            {% endif %}
+                        </div>
+                    {% endfor %}
+                    <button type="submit" class="btn btn-success fw-semibold">Save Changes</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

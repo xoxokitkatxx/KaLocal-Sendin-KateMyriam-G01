@@ -1,0 +1,110 @@
+{% extends 'accounts/base.html' %}
+
+{% block content %}
+<!-- Consumer Welcome Banner -->
+<div class="card border-0 shadow-sm mb-4 bg-white">
+    <div class="card-body p-4 d-flex flex-column flex-md-row justify-content-between align-items-md-center">
+        <div>
+            <span class="badge bg-primary mb-2">Consumer Directory</span>
+            <h3 class="fw-bold mb-1">Hello, {{ profile.full_name }}!</h3>
+            <p class="text-muted mb-0">
+                Exploring local vendors near <strong>{{ profile.location.barangay_name }}, {{ profile.location.city }}</strong>
+            </p>
+        </div>
+        <div class="mt-3 mt-md-0 d-flex gap-2">
+            <a href="{% url 'profile' %}" class="btn btn-outline-success fw-semibold">My Profile</a>
+            <button type="button" class="btn btn-success fw-semibold">Saved Vendors (0)</button>
+        </div>
+    </div>
+</div>
+
+<!-- Search & Barangay Filter Bar (Placeholder) -->
+<div class="card border-0 shadow-sm mb-4">
+    <div class="card-body p-3">
+        <div class="row g-2">
+            <div class="col-md-6">
+                <input type="text" class="form-control" placeholder="Search for local food, sari-sari stores, or products...">
+            </div>
+            <div class="col-md-4">
+                <select class="form-select">
+                    <option selected>Barangay: {{ profile.location.barangay_name }} (My Area)</option>
+                    {% for brgy in barangays %}
+                        <option>{{ brgy.barangay_name }}, {{ brgy.city }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="col-md-2 d-grid">
+                <button type="button" class="btn btn-success fw-semibold">Search</button>
+            </div>
+        </div>
+
+        <!-- Category Filter Buttons -->
+        <div class="d-flex flex-wrap gap-2 mt-3">
+            <button type="button" class="btn btn-sm btn-success">All Categories</button>
+            <button type="button" class="btn btn-sm btn-outline-secondary">Cooked Food & Delicacies</button>
+            <button type="button" class="btn btn-sm btn-outline-secondary">Fresh Produce</button>
+            <button type="button" class="btn btn-sm btn-outline-secondary">Sari-Sari & Groceries</button>
+            <button type="button" class="btn btn-sm btn-outline-secondary">Home Services</button>
+        </div>
+    </div>
+</div>
+
+<!-- Featured Local Vendors Placeholder Cards -->
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h5 class="fw-bold text-success mb-0">Featured Vendors in {{ profile.location.barangay_name }}</h5>
+    <button type="button" class="btn btn-sm btn-outline-success">View All Vendors</button>
+</div>
+
+<div class="row g-4">
+    <div class="col-md-4">
+        <div class="card border-0 shadow-sm h-100">
+            <div class="card-body p-4 d-flex flex-column justify-content-between">
+                <div>
+                    <span class="badge bg-success-subtle text-success mb-2">Local Food</span>
+                    <h5 class="fw-bold mb-1">Nanay Maria's Lutong Bahay</h5>
+                    <p class="text-muted small mb-2">📍 {{ profile.location.barangay_name }}, Cebu City</p>
+                    <p class="small text-secondary mb-3">Freshly cooked Cebuano meals, ngohiong, and afternoon merienda available daily.</p>
+                </div>
+                <div class="d-grid gap-2">
+                    <button type="button" class="btn btn-outline-success btn-sm fw-semibold">View Store Products</button>
+                    <button type="button" class="btn btn-light btn-sm border">Contact Vendor</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="card border-0 shadow-sm h-100">
+            <div class="card-body p-4 d-flex flex-column justify-content-between">
+                <div>
+                    <span class="badge bg-success-subtle text-success mb-2">Fresh Produce</span>
+                    <h5 class="fw-bold mb-1">Kuya Ben's Talipapa Stall</h5>
+                    <p class="text-muted small mb-2">📍 {{ profile.location.barangay_name }}, Cebu City</p>
+                    <p class="small text-secondary mb-3">Farm-fresh vegetables, spices, and local fruits sourced directly from Busay farmers.</p>
+                </div>
+                <div class="d-grid gap-2">
+                    <button type="button" class="btn btn-outline-success btn-sm fw-semibold">View Store Products</button>
+                    <button type="button" class="btn btn-light btn-sm border">Contact Vendor</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="card border-0 shadow-sm h-100">
+            <div class="card-body p-4 d-flex flex-column justify-content-between">
+                <div>
+                    <span class="badge bg-success-subtle text-success mb-2">Sari-Sari Essentials</span>
+                    <h5 class="fw-bold mb-1">J&K Neighborhood Mini Mart</h5>
+                    <p class="text-muted small mb-2">📍 {{ profile.location.barangay_name }}, Cebu City</p>
+                    <p class="small text-secondary mb-3">Daily household essentials, snacks, cold drinks, and gallon water refills.</p>
+                </div>
+                <div class="d-grid gap-2">
+                    <button type="button" class="btn btn-outline-success btn-sm fw-semibold">View Store Products</button>
+                    <button type="button" class="btn btn-light btn-sm border">Contact Vendor</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

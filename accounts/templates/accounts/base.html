@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KaLocal - Cebu City Barangay Directory</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="bg-light">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-success shadow-sm">
+        <div class="container">
+            <a class="navbar-brand fw-bold" href="{% url 'dashboard' %}">KaLocal Cebu</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#kalocalNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="kalocalNav">
+                {% if user.is_authenticated %}
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                        <li class="nav-item">
+                            <a class="nav-link text-white fw-semibold" href="{% url 'dashboard' %}">Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-white" href="{% url 'profile' %}">My Profile</a>
+                        </li>
+                    </ul>
+                    <div class="d-flex align-items-center">
+                        <span class="text-white small me-3">Signed in as <strong>@{{ user.username }}</strong></span>
+                        <a href="{% url 'logout' %}" class="btn btn-outline-light btn-sm">Logout</a>
+                    </div>
+                {% else %}
+                    <div class="ms-auto d-flex">
+                        <a href="{% url 'login' %}" class="btn btn-outline-light btn-sm me-2">Login</a>
+                        <a href="{% url 'register' %}" class="btn btn-light btn-sm text-success fw-semibold">Sign Up</a>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </nav>
+
+    <div class="container py-4">
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert alert-{% if message.tags == 'error' %}danger{% else %}{{ message.tags }}{% endif %} alert-dismissible fade show" role="alert">
+                    {{ message }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+            {% endfor %}
+        {% endif %}
+
+        {% block content %}{% endblock %}
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
