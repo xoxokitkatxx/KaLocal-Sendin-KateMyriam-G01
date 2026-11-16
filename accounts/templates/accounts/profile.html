@@ -1,53 +1,129 @@
 {% extends 'accounts/base.html' %}
 
+{% block title %}My Profile | KaLocal{% endblock %}
+
 {% block content %}
-<div class="d-flex justify-content-between align-items-center mb-3">
-    <h4 class="fw-bold text-success mb-0">My Account Profile</h4>
-    <a href="{% url 'dashboard' %}" class="btn btn-outline-success btn-sm fw-semibold">&larr; Back to Home Dashboard</a>
-</div>
+<div class="row g-4 my-1">
+    <!-- Left Column: Profile Summary & Delete Account -->
+    <div class="col-lg-4">
+        <div class="kl-card kl-card-red p-4 h-100 d-flex flex-column justify-content-between">
+            <div>
+                <span class="kl-badge kl-badge-red mb-3">
+                    {{ profile.get_role_display }} (Locked)
+                </span>
+                <h2 class="font-lobster text-kl-blue mb-1">{{ profile.full_name }}</h2>
+                <p class="fw-bold text-secondary mb-3">@{{ request.user.username }} • {{ profile.email }}</p>
 
-<div class="row g-4">
-    <div class="col-md-5">
-        <div class="card shadow-sm border-0">
-            <div class="card-body p-4">
-                <span class="badge bg-success mb-2">{{ profile.get_role_display }} (Locked)</span>
-                <h4 class="fw-bold mb-0">{{ profile.full_name }}</h4>
-                <p class="text-muted small mb-1">@{{ request.user.username }}</p>
-                <p class="text-muted small mb-3">{{ profile.email }}</p>
+                <hr style="border-top: 2px solid var(--kl-navy-border); opacity: 1;">
 
-                <hr>
-                <p class="mb-2"><strong>Barangay:</strong> {{ profile.location }}</p>
-                <p class="mb-2"><strong>Contact Number:</strong> {{ profile.contact_number|default:"Not provided" }}</p>
-                <p class="mb-3"><strong>Bio:</strong><br>{{ profile.bio|default:"No bio added yet." }}</p>
+                <div class="mb-2">
+                    <strong>Barangay:</strong> {{ profile.location.barangay_name }}, {{ profile.location.city }}
+                </div>
+                <div class="mb-2">
+                    <strong>Contact Number:</strong> {{ profile.contact_number|default:"Not set" }}
+                </div>
+                <div class="mb-4">
+                    <strong>Bio:</strong><br>
+                    <span class="fw-semibold">{{ profile.bio|default:"No bio provided." }}</span>
+                </div>
+            </div>
 
-                <form method="POST" action="{% url 'delete_account' %}" onsubmit="return confirm('Are you sure you want to permanently delete your KaLocal account?');">
-                    {% csrf_token %}
-                    <button type="submit" class="btn btn-outline-danger btn-sm w-100">Delete Account</button>
-                </form>
+            <div class="d-grid mt-3">
+                <button type="button" class="btn-kl btn-kl-red" data-bs-toggle="modal" data-bs-target="#deleteAccountModal">
+                    Delete Account
+                </button>
             </div>
         </div>
     </div>
 
-    <div class="col-md-7">
-        <div class="card shadow-sm border-0">
-            <div class="card-body p-4">
-                <h5 class="fw-bold text-success mb-3">Update Profile Information</h5>
-                <form method="POST">
-                    {% csrf_token %}
-                    <div class="mb-3">
-                        <label class="form-label fw-semibold">Account Role (Read-Only)</label>
-                        <input type="text" class="form-control bg-light" value="{{ profile.get_role_display }}" disabled>
+    <!-- Right Column: Update Profile Information -->
+    <div class="col-lg-8">
+        <div class="kl-card kl-card-yellow p-4 p-md-5">
+            <h2 class="font-lobster text-kl-blue mb-4">Update Profile Information</h2>
+
+            <!-- Read-Only Role Box -->
+            <div class="kl-readonly-box mb-4">
+                <span class="small text-uppercase fw-bolder d-block">Account Role (Read-Only)</span>
+                <strong class="fs-5 text-kl-navy">{{ profile.get_role_display }}</strong>
+            </div>
+
+            <form method="post" novalidate>
+                {% csrf_token %}
+
+                <div class="row g-3 mb-3">
+                    <div class="col-md-6">
+                        <label for="{{ form.full_name.id_for_label }}" class="form-label">Full name</label>
+                        {{ form.full_name }}
+                        {% if form.full_name.errors %}
+                            <div class="text-danger small fw-bold mt-1">{{ form.full_name.errors.0 }}</div>
+                        {% endif %}
                     </div>
-                    {% for field in form %}
-                        <div class="mb-3">
-                            <label class="form-label fw-semibold">{{ field.label }}</label>
-                            {{ field }}
-                            {% if field.errors %}
-                                <div class="text-danger small mt-1">{{ field.errors|striptags }}</div>
-                            {% endif %}
-                        </div>
-                    {% endfor %}
-                    <button type="submit" class="btn btn-success fw-semibold">Save Changes</button>
+                    <div class="col-md-6">
+                        <label for="{{ form.email.id_for_label }}" class="form-label">Email</label>
+                        {{ form.email }}
+                        {% if form.email.errors %}
+                            <div class="text-danger small fw-bold mt-1">{{ form.email.errors.0 }}</div>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <div class="row g-3 mb-3">
+                    <div class="col-md-6">
+                        <label for="{{ form.location.id_for_label }}" class="form-label">Location</label>
+                        {{ form.location }}
+                        {% if form.location.errors %}
+                            <div class="text-danger small fw-bold mt-1">{{ form.location.errors.0 }}</div>
+                        {% endif %}
+                    </div>
+                    <div class="col-md-6">
+                        <label for="{{ form.contact_number.id_for_label }}" class="form-label">Contact number</label>
+                        {{ form.contact_number }}
+                        {% if form.contact_number.errors %}
+                            <div class="text-danger small fw-bold mt-1">{{ form.contact_number.errors.0 }}</div>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label for="{{ form.bio.id_for_label }}" class="form-label">Bio</label>
+                    {{ form.bio }}
+                    {% if form.bio.errors %}
+                        <div class="text-danger small fw-bold mt-1">{{ form.bio.errors.0 }}</div>
+                    {% endif %}
+                </div>
+
+                <div class="mb-4">
+                    <label for="{{ form.username.id_for_label }}" class="form-label">Username</label>
+                    {{ form.username }}
+                    {% if form.username.errors %}
+                        <div class="text-danger small fw-bold mt-1">{{ form.username.errors.0 }}</div>
+                    {% endif %}
+                </div>
+
+                <div class="d-flex justify-content-end">
+                    <button type="submit" class="btn-kl btn-kl-blue px-4">Save Changes</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Delete Account Confirmation Modal -->
+<div class="modal fade" id="deleteAccountModal" tabindex="-1" aria-labelledby="deleteAccountModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content kl-card kl-card-red p-3">
+            <div class="modal-header border-0">
+                <h4 class="font-lobster text-kl-red mb-0" id="deleteAccountModalLabel">Confirm Account Deletion</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body fw-semibold">
+                Are you sure you want to permanently delete your KaLocal account (<strong>@{{ request.user.username }}</strong>)? This action cannot be undone.
+            </div>
+            <div class="modal-footer border-0 d-flex gap-2">
+                <button type="button" class="btn-kl btn-kl-outline btn-kl-sm" data-bs-dismiss="modal">Cancel</button>
+                <form method="post" action="{% url 'delete_account' %}" class="m-0">
+                    {% csrf_token %}
+                    <button type="submit" class="btn-kl btn-kl-red btn-kl-sm">Yes, Delete My Account</button>
                 </form>
             </div>
         </div>

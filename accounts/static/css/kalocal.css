@@ -1,0 +1,324 @@
+@import url('https://fonts.googleapis.com/css2?family=Lobster&family=Nunito:wght@400;600;700;800&display=swap');
+
+:root {
+    --kl-blue: #1E3F9A;
+    --kl-red: #C8202B;
+    --kl-yellow: #F9C80E;
+    --kl-orange: #F28C0F;
+    --kl-orange-text: #D9690B;
+    --kl-cream-bg: #FFF6DB;
+    --kl-surface: #FFFDF3;
+    --kl-navy-border: #0B2A6F;
+    --kl-navy-text: #0B1F4D;
+    --kl-soft-yellow: #FFE9A6;
+    --kl-white: #FFFFFF;
+}
+
+body {
+    background-color: var(--kl-cream-bg);
+    color: var(--kl-navy-text);
+    font-family: 'Nunito', sans-serif;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* 10px Banig-style top stripe */
+.banig-stripe {
+    height: 10px;
+    width: 100%;
+    background: repeating-linear-gradient(
+        90deg,
+        var(--kl-blue) 0px, var(--kl-blue) 48px,
+        var(--kl-red) 48px, var(--kl-red) 96px,
+        var(--kl-yellow) 96px, var(--kl-yellow) 144px,
+        var(--kl-orange) 144px, var(--kl-orange) 192px
+    );
+}
+
+/* Navbar */
+.kl-navbar {
+    background-color: var(--kl-surface);
+    border-bottom: 3px solid var(--kl-navy-border);
+    padding: 0.25rem 0;
+}
+
+.kl-logo {
+    height: 70px;
+    width: auto;
+    object-fit: contain;
+    transition: transform 0.15s ease;
+}
+
+.kl-logo:hover {
+    transform: scale(1.03);
+}
+
+.kl-nav-link {
+    color: var(--kl-navy-text);
+    font-weight: 800;
+    text-decoration: none;
+    padding: 0.4rem 0.75rem;
+    border-radius: 999px;
+}
+
+.kl-nav-link:hover,
+.kl-nav-link.active {
+    color: var(--kl-blue);
+    text-decoration: underline;
+    text-underline-offset: 4px;
+}
+
+/* Typography */
+.font-lobster {
+    font-family: 'Lobster', cursive;
+    letter-spacing: 0.3px;
+}
+
+.text-kl-blue { color: var(--kl-blue) !important; }
+.text-kl-red { color: var(--kl-red) !important; }
+.text-kl-yellow { color: var(--kl-yellow) !important; }
+.text-kl-orange { color: var(--kl-orange-text) !important; }
+.text-kl-navy { color: var(--kl-navy-text) !important; }
+
+/* Cards with 2px Navy Border & Solid 6px Offset Shadows */
+.kl-card {
+    background-color: var(--kl-white);
+    border: 2px solid var(--kl-navy-border);
+    border-radius: 18px;
+    box-shadow: 6px 6px 0px var(--kl-yellow);
+}
+
+.kl-card-yellow { box-shadow: 6px 6px 0px var(--kl-yellow); }
+.kl-card-red    { box-shadow: 6px 6px 0px var(--kl-red); }
+.kl-card-blue   { box-shadow: 6px 6px 0px var(--kl-blue); }
+
+/* Login Hero Panel */
+.kl-hero-panel {
+    background-color: var(--kl-blue);
+    color: var(--kl-white);
+    border: 2px solid var(--kl-navy-border);
+    border-radius: 18px;
+    box-shadow: 6px 6px 0px var(--kl-red);
+}
+
+/* Vendor Stat Cards (10px top borders) */
+.kl-stat-red {
+    border-top: 10px solid var(--kl-red) !important;
+}
+.kl-stat-orange {
+    border-top: 10px solid var(--kl-orange) !important;
+}
+.kl-stat-blue {
+    border-top: 10px solid var(--kl-blue) !important;
+}
+
+/* Pill Buttons */
+.btn-kl {
+    border: 2px solid var(--kl-navy-border);
+    border-radius: 999px;
+    min-height: 44px;
+    padding: 0.45rem 1.35rem;
+    font-weight: 800;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.1s ease, filter 0.15s ease;
+    text-decoration: none;
+}
+
+.btn-kl:hover {
+    transform: translateY(-1px);
+    filter: brightness(0.97);
+}
+
+.btn-kl-sm {
+    min-height: 36px;
+    padding: 0.25rem 1rem;
+    font-size: 0.875rem;
+}
+
+.btn-kl-red {
+    background-color: var(--kl-red);
+    color: var(--kl-white) !important;
+}
+
+.btn-kl-yellow {
+    background-color: var(--kl-yellow);
+    color: var(--kl-navy-text) !important;
+}
+
+.btn-kl-blue {
+    background-color: var(--kl-blue);
+    color: var(--kl-white) !important;
+}
+
+.btn-kl-outline {
+    background-color: var(--kl-white);
+    color: var(--kl-navy-text) !important;
+}
+
+.btn-kl-outline:hover {
+    background-color: var(--kl-soft-yellow);
+}
+
+/* Form Controls */
+.form-label {
+    font-weight: 800;
+    color: var(--kl-navy-text);
+    margin-bottom: 0.35rem;
+}
+
+.form-control,
+.form-select {
+    background-color: var(--kl-surface);
+    border: 2px solid var(--kl-navy-border);
+    border-radius: 12px;
+    min-height: 46px;
+    color: var(--kl-navy-text);
+    font-weight: 600;
+    padding: 0.55rem 0.9rem;
+}
+
+.form-control:focus,
+.form-select:focus {
+    background-color: var(--kl-white);
+    border-color: var(--kl-blue);
+    box-shadow: 0 0 0 3px rgba(30, 63, 154, 0.25);
+    color: var(--kl-navy-text);
+}
+
+/* Selectable Role Tiles on Register Page */
+.role-tile {
+    background-color: var(--kl-white);
+    border: 2px solid var(--kl-navy-border);
+    border-radius: 14px;
+    padding: 0.85rem 1.1rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+    font-weight: 800;
+    transition: all 0.15s ease;
+}
+
+.role-tile input[type="radio"] {
+    width: 1.15rem;
+    height: 1.15rem;
+    accent-color: var(--kl-blue);
+    cursor: pointer;
+}
+
+.role-tile-vendor {
+    box-shadow: 4px 4px 0px var(--kl-red);
+}
+
+.role-tile-consumer {
+    box-shadow: 4px 4px 0px var(--kl-blue);
+}
+
+.role-tile:has(input:checked) {
+    background-color: var(--kl-surface);
+}
+
+/* Flash Alert Messages */
+.kl-alert {
+    background-color: var(--kl-soft-yellow);
+    border: 2px solid var(--kl-navy-border);
+    border-radius: 12px;
+    color: var(--kl-navy-text);
+    font-weight: 800;
+    padding: 0.85rem 1.25rem;
+}
+
+.kl-alert-error {
+    background-color: #FFD6D6;
+    border: 2px solid var(--kl-red);
+    color: var(--kl-red);
+}
+
+/* Badges & Category Tags */
+.kl-badge {
+    border-radius: 999px;
+    padding: 0.3rem 0.85rem;
+    font-weight: 800;
+    font-size: 0.78rem;
+    display: inline-block;
+}
+
+.kl-badge-red    { background-color: var(--kl-red); color: var(--kl-white); }
+.kl-badge-blue   { background-color: var(--kl-blue); color: var(--kl-white); }
+.kl-badge-yellow { background-color: var(--kl-yellow); color: var(--kl-navy-text); }
+.kl-badge-orange { background-color: var(--kl-orange); color: var(--kl-navy-text); }
+
+/* Dynamic Category Mapping */
+.badge-cat-FOOD     { background-color: var(--kl-orange); color: var(--kl-navy-text); }
+.badge-cat-PRODUCE  { background-color: var(--kl-yellow); color: var(--kl-navy-text); }
+.badge-cat-GROCERY  { background-color: var(--kl-red); color: var(--kl-white); }
+.badge-cat-SERVICES { background-color: var(--kl-blue); color: var(--kl-white); }
+.badge-cat-OTHER    { background-color: var(--kl-soft-yellow); color: var(--kl-navy-text); border: 1px solid var(--kl-navy-border); }
+
+/* Diagonal Striped No-Image Placeholders */
+.kl-no-image-banner {
+    height: 190px;
+    width: 100%;
+    border-bottom: 2px solid var(--kl-navy-border);
+    background: repeating-linear-gradient(
+        -45deg,
+        var(--kl-soft-yellow),
+        var(--kl-soft-yellow) 16px,
+        #F7DC82 16px,
+        #F7DC82 32px
+    );
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.kl-no-image-pill {
+    background-color: var(--kl-surface);
+    border: 2px solid var(--kl-navy-border);
+    border-radius: 999px;
+    padding: 0.3rem 0.9rem;
+    font-weight: 800;
+    font-size: 0.8rem;
+    color: var(--kl-navy-text);
+}
+
+.kl-no-image-thumb {
+    width: 76px;
+    height: 76px;
+    flex-shrink: 0;
+    border: 2px solid var(--kl-navy-border);
+    border-radius: 12px;
+    background: repeating-linear-gradient(
+        -45deg,
+        var(--kl-soft-yellow),
+        var(--kl-soft-yellow) 10px,
+        #F7DC82 10px,
+        #F7DC82 20px
+    );
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 800;
+    font-size: 0.72rem;
+    color: var(--kl-navy-text);
+    text-align: center;
+}
+
+/* Vendor Product Item Row */
+.kl-product-row {
+    background-color: var(--kl-surface);
+    border: 2px solid var(--kl-navy-border);
+    border-radius: 14px;
+    padding: 0.9rem 1.15rem;
+}
+
+/* Read-only Role Box on Profile Page */
+.kl-readonly-box {
+    background-color: var(--kl-soft-yellow);
+    border: 2px dashed var(--kl-navy-border);
+    border-radius: 12px;
+    padding: 0.75rem 1rem;
+}

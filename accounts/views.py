@@ -3,7 +3,7 @@ from django.contrib.auth import login, logout
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
-from .models import UserProfile, Location
+from .models import UserProfile, Location, Product
 from .forms import KaLocalRegistrationForm, UserProfileUpdateForm
 
 
@@ -32,14 +32,28 @@ def dashboard_view(request):
     profile = _get_or_create_user_profile(request.user)
 
     if profile.role == UserProfile.ROLE_VENDOR:
+        products = Product.objects.filter(vendor=profile)
         return render(request, 'accounts/vendor_dashboard.html', {
             'profile': profile,
+            'products': products,
+            'active_products_count': products.filter(is_active=True).count(),
         })
 
     barangays = Location.objects.all()
+    selected_location = profile.location
+    location_id = request.GET.get('location')
+    if location_id and location_id.isdecimal():
+        selected_location = Location.objects.filter(pk=location_id).first() or profile.location
+
+    products = Product.objects.filter(
+        vendor__location=selected_location,
+        is_active=True,
+    ).select_related('vendor', 'vendor__location')
     return render(request, 'accounts/consumer_dashboard.html', {
         'profile': profile,
         'barangays': barangays,
+        'selected_location': selected_location,
+        'products': products,
     })
 
 
@@ -62,6 +76,8 @@ def register_view(request):
 
 def login_view(request):
     if request.user.is_authenticated:
+        if request.user.is_superuser:
+            return redirect('admin:index')
         return redirect('dashboard')
 
     if request.method == 'POST':
@@ -70,6 +86,8 @@ def login_view(request):
             user = form.get_user()
             login(request, user)
             messages.success(request, f"Welcome back, {user.username}!")
+            if user.is_superuser:
+                return redirect('admin:index')
             return redirect('dashboard')
         else:
             messages.error(request, "Invalid username or password.")

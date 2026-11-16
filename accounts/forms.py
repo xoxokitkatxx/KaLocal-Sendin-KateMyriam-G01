@@ -19,7 +19,8 @@ class KaLocalRegistrationForm(UserCreationForm):
     role = forms.ChoiceField(
         choices=UserProfile.ROLE_CHOICES,
         required=True,
-        widget=forms.Select(attrs={'class': 'form-select'})
+        initial=UserProfile.ROLE_CONSUMER,
+        widget=forms.RadioSelect()
     )
     location = forms.ModelChoiceField(
         queryset=Location.objects.all(),
@@ -27,10 +28,23 @@ class KaLocalRegistrationForm(UserCreationForm):
         empty_label="Select your Barangay in Cebu City",
         widget=forms.Select(attrs={'class': 'form-select'})
     )
+    contact_number = forms.CharField(
+        max_length=20,
+        required=False,
+        widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'e.g., 09171234567 (Optional)'})
+    )
+    bio = forms.CharField(
+        required=False,
+        widget=forms.Textarea(attrs={
+            'class': 'form-control',
+            'rows': 3,
+            'placeholder': 'Tell your barangay about yourself or your store... (Optional)'
+        })
+    )
 
     class Meta(UserCreationForm.Meta):
         model = User
-        fields = ('username', 'full_name', 'email', 'role', 'location')
+        fields = ('username', 'full_name', 'email', 'role', 'location', 'contact_number', 'bio')
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -65,6 +79,8 @@ class KaLocalRegistrationForm(UserCreationForm):
                 email=self.cleaned_data['email'],
                 role=self.cleaned_data['role'],
                 location=self.cleaned_data['location'],
+                contact_number=self.cleaned_data.get('contact_number', ''),
+                bio=self.cleaned_data.get('bio', ''),
             )
         return user
 
@@ -78,11 +94,13 @@ class UserProfileUpdateForm(forms.ModelForm):
 
     class Meta:
         model = UserProfile
-        fields = ['full_name', 'email', 'location']
+        fields = ['full_name', 'email', 'location', 'contact_number', 'bio']
         widgets = {
             'full_name': forms.TextInput(attrs={'class': 'form-control'}),
             'email': forms.EmailInput(attrs={'class': 'form-control'}),
             'location': forms.Select(attrs={'class': 'form-select'}),
+            'contact_number': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'e.g., 09171234567'}),
+            'bio': forms.Textarea(attrs={'class': 'form-control', 'rows': 3}),
         }
 
     def __init__(self, *args, **kwargs):

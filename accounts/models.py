@@ -63,3 +63,34 @@ class UserProfile(models.Model):
 
     def __str__(self):
         return f"{self.full_name} ({self.role}) - {self.location.barangay_name}"
+
+class Product(models.Model):
+    CATEGORY_CHOICES = [
+        ('FOOD', 'Cooked Food & Delicacies'),
+        ('PRODUCE', 'Fresh Produce'),
+        ('GROCERY', 'Sari-Sari & Groceries'),
+        ('SERVICES', 'Home Services'),
+        ('OTHER', 'Other'),
+    ]
+
+    product_id = models.AutoField(primary_key=True)
+    vendor = models.ForeignKey(
+        UserProfile, 
+        on_delete=models.CASCADE, 
+        related_name='products',
+        limit_choices_to={'role': 'VENDOR'}
+    )
+    name = models.CharField(max_length=200)
+    description = models.TextField(blank=True, null=True)
+    price = models.DecimalField(max_digits=10, decimal_places=2)
+    category = models.CharField(max_length=20, choices=CATEGORY_CHOICES, default='OTHER')
+    image = models.ImageField(upload_to='product_images/', blank=True, null=True) # <-- ADD THIS LINE
+    is_active = models.BooleanField(default=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        db_table = 'products'
+        ordering = ['-created_at']
+
+    def __str__(self):
+        return f"{self.name} - {self.vendor.full_name}"
