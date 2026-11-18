@@ -4,7 +4,7 @@ from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from .models import UserProfile, Location, Product
-from .forms import KaLocalRegistrationForm, UserProfileUpdateForm
+from .forms import KaLocalRegistrationForm, UserProfileUpdateForm, ProductForm
 
 
 def _get_or_create_user_profile(user):
@@ -141,3 +141,29 @@ def delete_account_view(request):
         messages.success(request, "Your KaLocal account has been permanently deleted.")
         return redirect('login')
     return redirect('profile')
+
+@login_required
+def product_create_view(request):
+    profile = _get_or_create_user_profile(request.user)
+    
+    # Security: Restrict to VENDOR role only
+    if profile.role != UserProfile.ROLE_VENDOR:
+        messages.error(request, "Access denied. Only vendors can manage products.")
+        return redirect('dashboard')
+
+    if request.method == 'POST':
+        # request.FILES is required for image uploads
+        form = ProductForm(request.POST, request.FILES)
+        if form.is_valid():
+            product = form.save(commit=False)
+            product.vendor = profile  # Link product to the logged-in vendor
+            product.save()
+            messages.success(request, f"'{product.name}' was successfully added to your catalog!")
+            return redirect('vendor_dashboard')
+    else:
+        form = ProductForm()
+
+    return render(request, 'accounts/product_form.html', {
+        'form': form,
+        'action': 'Add New'
+    })

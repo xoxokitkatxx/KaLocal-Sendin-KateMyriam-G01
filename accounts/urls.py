@@ -10,6 +10,7 @@ urlpatterns = [
     path('dashboard/', views.dashboard_view, name='dashboard_redirect'),
     path('dashboard/vendor/', views.dashboard_view, name='vendor_dashboard'),
     path('dashboard/consumer/', views.dashboard_view, name='consumer_dashboard'),
+    path('dashboard/vendor/product/add/', views.product_create_view, name='product_create'),
     path('profile/', views.profile_view, name='profile'),
     path('profile/edit/', views.profile_view, name='profile_edit'),
     path('delete-account/', views.delete_account_view, name='delete_account'),
