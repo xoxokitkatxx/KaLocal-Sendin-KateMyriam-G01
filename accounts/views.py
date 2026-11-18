@@ -1,11 +1,10 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import login, logout
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from .models import UserProfile, Location, Product
 from .forms import KaLocalRegistrationForm, UserProfileUpdateForm, ProductForm
-
 
 def _get_or_create_user_profile(user):
     """Helper to safely fetch or create a profile (e.g., for superusers)."""
@@ -166,4 +165,52 @@ def product_create_view(request):
     return render(request, 'accounts/product_form.html', {
         'form': form,
         'action': 'Add New'
+    })
+
+@login_required
+def product_update_view(request, pk):
+    profile = _get_or_create_user_profile(request.user)
+    
+    if profile.role != UserProfile.ROLE_VENDOR:
+        messages.error(request, "Access denied. Only vendors can manage products.")
+        return redirect('dashboard')
+
+    # Fetch the product and ensure it belongs to the logged-in vendor
+    product = get_object_or_404(Product, pk=pk, vendor=profile)
+
+    if request.method == 'POST':
+        # Pass 'instance=product' to update the existing record instead of creating a new one
+        form = ProductForm(request.POST, request.FILES, instance=product)
+        if form.is_valid():
+            form.save()
+            messages.success(request, f"'{product.name}' was successfully updated!")
+            return redirect('vendor_dashboard')
+    else:
+        # Pre-fill the form with the product's current data
+        form = ProductForm(instance=product)
+
+    return render(request, 'accounts/product_form.html', {
+        'form': form,
+        'action': 'Edit'
+    })
+
+@login_required
+def product_delete_view(request, pk):
+    profile = _get_or_create_user_profile(request.user)
+    
+    if profile.role != UserProfile.ROLE_VENDOR:
+        messages.error(request, "Access denied.")
+        return redirect('dashboard')
+
+    # Fetch the product and ensure it belongs to the logged-in vendor
+    product = get_object_or_404(Product, pk=pk, vendor=profile)
+
+    if request.method == 'POST':
+        product_name = product.name
+        product.delete()
+        messages.success(request, f"'{product_name}' has been removed from your catalog.")
+        return redirect('vendor_dashboard')
+
+    return render(request, 'accounts/product_confirm_delete.html', {
+        'product': product
     })

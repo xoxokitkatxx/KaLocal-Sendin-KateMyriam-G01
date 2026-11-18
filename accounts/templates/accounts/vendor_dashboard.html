@@ -97,8 +97,8 @@
                     </div>
 
                     <div class="d-flex gap-2">
-                        <button type="button" class="btn-kl btn-kl-outline btn-kl-sm">Edit</button>
-                        <button type="button" class="btn-kl btn-kl-red btn-kl-sm">Remove</button>
+                        <a href="{% url 'product_update' product.pk %}" class="btn-kl btn-kl-outline btn-kl-sm text-decoration-none">Edit</a>
+                        <a href="{% url 'product_delete' product.pk %}" class="btn-kl btn-kl-red btn-kl-sm text-decoration-none">Remove</a>
                     </div>
                 </div>
             {% empty %}
