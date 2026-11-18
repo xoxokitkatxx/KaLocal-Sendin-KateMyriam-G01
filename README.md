@@ -2,17 +2,31 @@
 
 KaLocal is a web-based local product directory for barangays in Cebu City. It empowers residents to discover fresh goods, cooked food, and trusted sari-sari stores right in their own neighborhood.
 
-## Current State of the Project (Phase 1)
+## Current State of the Project (Phase 2)
 
-This repository reflects Phase 1 of development. The current codebase successfully implements the foundational **Account Feature** and directory browsing. Active features include:
+This repository reflects Phase 2 of development. The codebase successfully implements the foundational **Account Feature** and our vertical slice **Core Feature**. Active features include:
 
-* Secure Registration and Login/Logout workflows
-* Profile viewing and editing
-* Role-based dashboards (Vendor and Consumer)
-* Barangay-filtered product browsing 
-  *(Note: Text search, category chips, and vendor interaction buttons like "View Store", "Message Vendor", or product management actions are currently UI placeholders slated for development in upcoming phases.)*
+- **Product Catalog Management (Core Feature):** Vendors can fully manage their catalog (Create, Read, Update, Delete product listings).
+- Secure Registration and Login/Logout workflows.
+- Profile viewing, editing, and account deletion.
+- Role-based dashboards (Vendor and Consumer).
+- Barangay-filtered product browsing. 
+  *(Note: Text search, category chips, and consumer-to-vendor interaction buttons like "View Store" or "Message Vendor" are currently UI placeholders slated for upcoming phases).*
 
-The user interface is fully responsive, built with **Bootstrap 5** (via CDN) and styled with a custom Filipino theme. Under the hood, the application extends **Django's built-in `User` model** with a related `UserProfile` model to handle roles and location data.
+The user interface is fully responsive, built with **Bootstrap 5** (via CDN) and styled with a custom Filipino theme. 
+
+## Core Feature: Product Catalog Management
+The core functionality of KaLocal is the localized product directory. This vertical slice allows authorized **Vendors** to manage their digital storefronts through complete CRUD operations. 
+* **Create:** Vendors can add new products (with names, prices, categories, and optional images).
+* **Read:** Products dynamically render on the vendor's dashboard and the consumer's barangay directory.
+* **Update:** Vendors can edit existing product details to keep inventory accurate.
+* **Delete:** Vendors can permanently remove products from their catalog (with a safeguard confirmation step).
+All data strictly persists to a PostgreSQL database, ensuring products are always tied directly to the vendor's assigned barangay.
+
+## User Roles
+
+1. **Local Vendor / Merchant (VENDOR):** Can create, read, update, and delete their own product listings. They can view their assigned barangay hub, manage their profile, and securely delete their account.
+2. **Consumer (CONSUMER):** Can browse the directory, filter available products by specific barangays, manage their profile, and delete their account.
 
 ## Technology Stack
 
